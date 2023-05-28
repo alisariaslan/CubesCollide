@@ -13911,7 +13911,7 @@ MonoBehaviour:
   randomizeAfterStart: 1
   playerOtoEnabledStart: 1
   spawnMyPlayer: 1
-  spawnBots: 1
+  spawnBots: 0
   spawnFoods: 1
   maxObjectSize: 30
   isMobileDevice: 0
@@ -23645,7 +23645,7 @@ MonoBehaviour:
   randomGroundColor: 1
   randomPlayerColor: 1
   randomBotColor: 1
-  randomFoodColor: 1
+  randomFoodColor: 0
   startRandomMapSize: 10
   endRandomMapSize: 10
   randomPlayerSpawn: 1

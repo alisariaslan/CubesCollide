@@ -16,6 +16,16 @@ public class PlayerController : MonoBehaviour
 		FindFirstObjectByType<EasyObjectsFade>().playerTransform = transform;
 	}
 
+	private void OnCollisionEnter(Collision collision)
+	{
+		Debug.Log("Player Collision! "+collision.transform.tag);
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		Debug.Log("Player Trigger! " + other.transform.tag);
+	}
+
 	// Update is called once per frame
 	void Update()
 	{

@@ -22,4 +22,14 @@ public class BotController : MonoBehaviour
 		float gposZ = gameObject.transform.position.z;
 
 	}
+
+	private void OnCollisionEnter(Collision collision)
+	{
+		Debug.Log("Bot Collision! " + collision.transform.tag);
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		Debug.Log("Bot Trigger! " + other.transform.tag);
+	}
 }

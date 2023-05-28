@@ -121,7 +121,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   direction: {x: 0, y: 0}
-  otoCompass: 0
 --- !u!95 &3840553202438219960
 Animator:
   serializedVersion: 7

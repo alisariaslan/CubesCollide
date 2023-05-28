@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 923e1d6d94a052749bbb4f861ee0df28
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212951
+  packageName: Fade game object/Easy Transparency
+  packageVersion: 1.0
+  assetPath: Assets/EasyObjectsFade/EasyObjectsFade.cs
+  uploadId: 480298

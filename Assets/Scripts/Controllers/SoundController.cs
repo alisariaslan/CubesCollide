@@ -23,6 +23,7 @@ public class SoundController : MonoBehaviour
 	private void Start()
 	{
 		Manager.Game.Sound.Object = this.gameObject;
+		Manager.Game.Sound.SoundObject = transform.GetChild(1).gameObject;
 		musicSource = transform.GetChild(0).GetComponent<AudioSource>();
 		audioSource = transform.GetChild(1).GetComponent<AudioSource>();
 		soundAnimator = GetComponent<Animator>();
@@ -51,9 +52,18 @@ public class SoundController : MonoBehaviour
 		}
 	}
 
+
+	public bool inMenuMusicIs = true;
 	// Update is called once per frame
-	public void ToggleMusic()
+	public void ToggleMusic(bool isPause)
 	{
+		if (!isPause)
+		{
+			if (inMenuMusicIs)
+				inMenuMusicIs = false;
+			else inMenuMusicIs = true;
+		}
+
 		if (music)
 		{
 			music = false;
@@ -65,6 +75,8 @@ public class SoundController : MonoBehaviour
 		}
 		else
 		{
+			if (!inMenuMusicIs)
+				return;
 			music = true;
 			var text = musicObject.GetComponentInChildren<Text>();
 			text.text = "Music On";
@@ -89,6 +101,8 @@ public class SoundController : MonoBehaviour
 
 	public async void SwitchToIngameMusic()
 	{
+		if (!music)
+			return;
 		await MusicFadeOut();
 		musicSource.clip = ingameMusic;
 		await MusicFadeIn();
@@ -96,6 +110,8 @@ public class SoundController : MonoBehaviour
 
 	public async void SwitchToMenuMusic()
 	{
+		if (!music)
+			return;
 		await MusicFadeOut();
 		musicSource.clip = menuMusic;
 		await MusicFadeIn();

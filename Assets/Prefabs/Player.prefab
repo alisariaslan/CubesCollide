@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4713422567988830932}
   - component: {fileID: 2707084894493510765}
   - component: {fileID: 3840553202438219960}
+  - component: {fileID: 1900153825691336678}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -121,6 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   direction: {x: 0, y: 0}
+  hitSound: {fileID: 8300000, guid: 1094576571a099f43b31732ad6dc6d25, type: 3}
 --- !u!95 &3840553202438219960
 Animator:
   serializedVersion: 7
@@ -143,3 +145,30 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!54 &1900153825691336678
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5593737256068591619}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0

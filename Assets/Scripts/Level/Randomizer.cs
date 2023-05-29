@@ -141,6 +141,7 @@ public class Randomizer : MonoBehaviour
 			return;
 
 		await Task.Delay(10);
+		GameObject my_food = new GameObject();
 		float generated = 0;
 		List<Food> Foods = new List<Food>();
 		int passed = 0;
@@ -158,7 +159,7 @@ public class Randomizer : MonoBehaviour
 				await Task.Delay(foodSpawnDelay);
 				generated = 0;
 			}
-			var my_food = Instantiate(food, spawnPos, Quaternion.identity, GameObject.Find("FoodCollection").transform);
+			my_food = Instantiate(food, spawnPos, Quaternion.identity, GameObject.Find("FoodCollection").transform);
 			if (randomFoodColor)
 				my_food.GetComponent<Renderer>().material.color = Helper.RandomColor();
 			my_food.transform.localScale = new Vector3(foodSize, foodSize, foodSize);
@@ -169,6 +170,7 @@ public class Randomizer : MonoBehaviour
 
 		}
 		Manager.Game.Foods = Foods;
+		Manager.Game.General.FoodTag = my_food.tag;
 	}
 	public async Task GenerateBots()
 	{
@@ -176,6 +178,7 @@ public class Randomizer : MonoBehaviour
 			return;
 
 		await Task.Delay(10);
+		GameObject my_bot = new GameObject();
 		List<Bot> Bots = new List<Bot>();
 		float lastSize = 0f;
 		float biggestSize = 0f;
@@ -209,12 +212,11 @@ public class Randomizer : MonoBehaviour
 				Vector3 spawnPos = new Vector3(startX, random_size / 2, startZ);
 				if (botSpawnDelay > 0)
 					await Task.Delay(botSpawnDelay);
-				var my_bot = Instantiate(bot, spawnPos, Quaternion.identity, GameObject.Find("BotCollection").transform);
+				 my_bot = Instantiate(bot, spawnPos, Quaternion.identity, GameObject.Find("BotCollection").transform);
 				if (randomBotColor)
 					my_bot.GetComponent<Renderer>().material.color = Helper.RandomColor();
 				my_bot.transform.localScale = new Vector3(random_size, random_size, random_size);
 				Bot botModel = new Bot() { Name = NameRandomizer.GetRandomName(minRandomName, maxRandomName), Object = my_bot, SpawnPosition = my_bot.transform.position };
-				//Debug.Log("Random Name Test:  " + NameRandomizer.GetRandomName(3, 11));
 				Bots.Add(botModel);
 				lastSize = random_size;
 				if (random_size > biggestSize)
@@ -241,7 +243,7 @@ public class Randomizer : MonoBehaviour
 				break;
 		}
 		Manager.Game.Bots = Bots;
-
+		Manager.Game.General.BotTag = my_bot.tag;
 	}
 
 	public async Task SpawnMyPlayer()

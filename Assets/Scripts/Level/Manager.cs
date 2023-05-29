@@ -30,6 +30,9 @@ public class Manager : MonoBehaviour
 	[Header("Device Settings")]
 	public bool isMobileDevice = false;
 
+	[Header("Chat Settings")]
+	public float chatClearInterval = 1.5f;
+
 	private void Start()
 	{
 		Game = new Game();
@@ -37,6 +40,7 @@ public class Manager : MonoBehaviour
 			Game.General.IsMobileDevice = true;
 		Game.Player.IsOtoEnabled = playerOtoEnabledStart;
 		Game.General.Menu = GameObject.Find("Menu");
+		Game.Chat.ClearInterval = chatClearInterval;
 	}
 
 	public async void StartGame()
@@ -85,7 +89,7 @@ public class Manager : MonoBehaviour
 
 	public void TogglePause()
 	{
-		Manager.Game.Sound.Controller.ToggleMusic();
+		Manager.Game.Sound.Controller.ToggleMusic(true);
 		var paused = Manager.Game.General.IsPaused;
 		if (paused)
 		{

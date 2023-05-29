@@ -7,48 +7,46 @@ public class ChatController : MonoBehaviour
 {
 	private Text text;
 	private List<string> lastTenString;
-	// Start is called before the first frame update
+
 	void Start()
 	{
 		Manager.Game.Chat.Object = gameObject;
 		text = GetComponent<Text>();
 		text.text = "";
-		lastTenString = new List<string>();
+		lastTenString = new List<string>(); 
+		timer = Manager.Game.Chat.ClearInterval;
 	}
 
-	// Update is called once per frame
+	float timer = 0f;
+	bool isEnabled = false;
+
+	void Update()
+	{
+		if (isEnabled)
+		{
+			timer -= Time.deltaTime;
+			if (timer < 0)
+			{
+				ClearTextOne();
+				timer = Manager.Game.Chat.ClearInterval;
+			}
+		}
+	}
+
 	public void Text_PlayerJoined(string playerName)
 	{
 		lastTenString.Add("Player \"" + playerName + "\" is joined.");
 		CompleteText();
 	}
+
 	public void Text_Line(string str)
 	{
 		lastTenString.Add(str);
 		CompleteText();
 	}
+
 	public void Text_Paragraph(string paragraph)
 	{
-
-	}
-
-	private void PrepareTexts()
-	{
-		text.text = "";
-		if (lastTenString.Count > 10)
-			lastTenString.RemoveAt(0);
-	}
-
-	private void CompleteText()
-	{
-		if (text == null)
-			return;
-
-		PrepareTexts();
-		foreach (var item in lastTenString)
-		{
-			text.text += item + "\n";
-		}
 
 	}
 
@@ -59,16 +57,38 @@ public class ChatController : MonoBehaviour
 			await Task.Delay(100);
 			Text_PlayerJoined(item.Name);
 		}
-		await SlowClear(1000);
 	}
 
-	private async Task SlowClear(int delay)
+	private void CompleteText()
 	{
-		while (lastTenString.Count > 0)
-		{
-			lastTenString.RemoveAt(lastTenString.Count - 1);
-			await Task.Delay(delay);
-			CompleteText();
-		}
+		while (lastTenString.Count > 10)
+			lastTenString.RemoveAt(0);
+
+		text.text = "";
+		foreach (var item in lastTenString)
+			text.text += item + "\n";
+
+		isEnabled = true;
+		timer = Manager.Game.Chat.ClearInterval;
 	}
+
+	public void ClearTextOne()
+	{
+		if (lastTenString.Count > 0)
+			lastTenString.RemoveAt(0);
+
+		Debug.Log("Deleted");
+
+		if (lastTenString.Count == 0)
+			isEnabled = false;
+
+		text.text = "";
+		foreach (var item in lastTenString)
+			text.text += item + "\n";
+	}
+
+
+
+
+
 }

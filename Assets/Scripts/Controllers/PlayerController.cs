@@ -1,13 +1,17 @@
 using Assets.Scripts;
-using Assets.Scripts.Models;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
 	public float movementSpeed = 1.0f;
 	public Vector2 direction = Vector2.zero;
+	public AudioClip hitSound;
+
+
 	private float inputX = 0;
 	private float inputY = 0;
+	private bool isUncounsions = false;
 
 	// Start is called before the first frame update
 	void Start()
@@ -16,14 +20,19 @@ public class PlayerController : MonoBehaviour
 		FindFirstObjectByType<EasyObjectsFade>().playerTransform = transform;
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	void OnCollisionEnter(Collision other)
 	{
-		Debug.Log("Player Collision! "+collision.transform.tag);
+		if (other.transform.CompareTag(Manager.Game.General.WallTag))
+		{
+			BounceBack(other.transform.position);
+			Manager.Game.Sound.PlayQuickSound(hitSound);
+		}
+
 	}
 
-	private void OnTriggerEnter(Collider other)
+	void OnTriggerEnter(Collider other)
 	{
-		Debug.Log("Player Trigger! " + other.transform.tag);
+
 	}
 
 	// Update is called once per frame
@@ -55,6 +64,8 @@ public class PlayerController : MonoBehaviour
 			Manager.Game.General.ToggleOto();
 		else if (Input.GetKeyDown(KeyCode.Escape))
 			Manager.Game.General.TogglePause();
+		else if (Input.GetKeyDown(KeyCode.C))
+			Manager.Game.Chat.Controller.ClearTextOne();
 
 		if (Input.GetKeyDown(KeyCode.UpArrow))
 			Manager.Game.Camera.Controller.CompassUp();
@@ -129,6 +140,18 @@ public class PlayerController : MonoBehaviour
 			direction = Vector2.right;
 		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.right)
 			direction = Vector2.up;
+	}
+
+	public void BounceBack(Vector3 target)
+	{
+		if (direction == Vector2.up)
+			direction = Vector2.down;
+		else if (direction == Vector2.down)
+			direction = Vector2.up;
+		else if (direction == Vector2.right)
+			direction = Vector2.left;
+		else if (direction == Vector2.left)
+			direction = Vector2.right;
 	}
 
 	public void SetCompassFromHere(KeyCode keyCode)

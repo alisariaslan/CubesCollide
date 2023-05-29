@@ -1412,7 +1412,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 39f8d8005766e494c8105eff862c74d1, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -13915,6 +13915,7 @@ MonoBehaviour:
   spawnFoods: 1
   maxObjectSize: 30
   isMobileDevice: 0
+  chatClearInterval: 1.5
 --- !u!4 &820207389
 Transform:
   m_ObjectHideFlags: 0
@@ -15117,7 +15118,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 5, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1349600627}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: -30, y: 0, z: 0}
@@ -21948,9 +21950,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1349600628}
-        m_TargetAssemblyTypeName: AudioController, Assembly-CSharp
+        m_TargetAssemblyTypeName: SoundController, Assembly-CSharp
         m_MethodName: ToggleMusic
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -23204,8 +23206,8 @@ Transform:
   m_Children:
   - {fileID: 65948408}
   - {fileID: 195400740}
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_Father: {fileID: 963194228}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1349600628
 MonoBehaviour:
@@ -23225,6 +23227,7 @@ MonoBehaviour:
   ingameMusic: {fileID: 8300000, guid: 419868df2caea5a4391281dcf4733708, type: 3}
   music: 1
   audiom: 1
+  inMenuMusicIs: 0
 --- !u!95 &1349600629
 Animator:
   serializedVersion: 7

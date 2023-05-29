@@ -50,11 +50,11 @@ public class ChatController : MonoBehaviour
 
 	}
 
-	public async void AnnounceBots()
+	public async Task AnnounceBots()
 	{
 		foreach (var item in Manager.Game.Bots)
 		{
-			await Task.Delay(100);
+			await Task.Delay(10);
 			Text_PlayerJoined(item.Name);
 		}
 	}

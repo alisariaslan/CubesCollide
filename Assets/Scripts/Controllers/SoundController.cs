@@ -19,6 +19,7 @@ public class SoundController : MonoBehaviour
 	private AudioSource musicSource;
 	private AudioSource audioSource;
 	private Animator soundAnimator;
+	private bool inPause = false;
 
 	private void Start()
 	{
@@ -52,37 +53,44 @@ public class SoundController : MonoBehaviour
 		}
 	}
 
-
-	public bool inMenuMusicIs = true;
-	// Update is called once per frame
 	public void ToggleMusic(bool isPause)
 	{
-		if (!isPause)
+		if (isPause)
 		{
-			if (inMenuMusicIs)
-				inMenuMusicIs = false;
-			else inMenuMusicIs = true;
-		}
+			if (!music)
+				return;
 
-		if (music)
-		{
-			music = false;
-			var text = musicObject.GetComponentInChildren<Text>();
-			text.text = "Music Off";
-			var closed = musicObject.transform.GetChild(1);
-			closed.gameObject.SetActive(true);
-			soundAnimator.Play("MusicOff");
+			if (inPause)
+			{
+				inPause = false;
+				soundAnimator.Play("MusicOn");
+			}
+			else
+			{
+				inPause = true;
+				soundAnimator.Play("MusicOff");
+			}
 		}
 		else
 		{
-			if (!inMenuMusicIs)
-				return;
-			music = true;
-			var text = musicObject.GetComponentInChildren<Text>();
-			text.text = "Music On";
-			var closed = musicObject.transform.GetChild(1);
-			closed.gameObject.SetActive(false);
-			soundAnimator.Play("MusicOn");
+			if (music)
+			{
+				music = false;
+				var text = musicObject.GetComponentInChildren<Text>();
+				text.text = "Music Off";
+				var closed = musicObject.transform.GetChild(1);
+				closed.gameObject.SetActive(true);
+				soundAnimator.Play("MusicOff");
+			}
+			else
+			{
+				music = true;
+				var text = musicObject.GetComponentInChildren<Text>();
+				text.text = "Music On";
+				var closed = musicObject.transform.GetChild(1);
+				closed.gameObject.SetActive(false);
+				soundAnimator.Play("MusicOn");
+			}
 		}
 	}
 

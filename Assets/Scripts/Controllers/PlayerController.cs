@@ -1,23 +1,31 @@
 using Assets.Scripts;
+using Assets.Scripts.Models;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
 	public float movementSpeed = 1.0f;
 	public Vector2 direction = Vector2.zero;
-	public AudioClip hitSound;
 
+	[Header("SFX")]
+	public AudioClip wallHitSound;
+	public AudioClip botHitSound;
 
 	private float inputX = 0;
 	private float inputY = 0;
-	private bool isUncounsions = false;
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		Manager.Game.Player.Object = this.gameObject;
 		FindFirstObjectByType<EasyObjectsFade>().playerTransform = transform;
+		StartAsync();
+	}
+
+	async void StartAsync()
+	{
+		await Task.Delay(50);
+		Manager.Game.Player.Object = this.gameObject;
 	}
 
 	void OnCollisionEnter(Collision other)
@@ -25,9 +33,39 @@ public class PlayerController : MonoBehaviour
 		if (other.transform.CompareTag(Manager.Game.General.WallTag))
 		{
 			BounceBack(other.transform.position);
-			Manager.Game.Sound.PlayQuickSound(hitSound);
-		}
+			Manager.Game.Sound.PlayQuickSound(wallHitSound);
+		} else if(other.transform.CompareTag(Manager.Game.General.BotTag))
+		{
+			if(other.transform.localScale.y < this.transform.localScale.y)
+			{
+				if (other.transform.localScale.y < this.transform.localScale.y / 2)
+				{
+					//OTHER DEAD
+				}
+				else
+				{
 
+					//OTHER SCALE DOWN
+				}
+			}
+			else
+			{
+				if(other.transform.localScale.y >  this.transform.localScale.y * 2)
+				{
+					//PLAYER IS DEAD
+					FindFirstObjectByType<EasyObjectsFade>().playerTransform = null;
+					GameObject.Destroy(Manager.Game.Player.Object);
+					Manager.Game.Camera.Controller.LookAtTheGround();
+					Manager.Game.Chat.Controller.Text_Line("Your cube has eaten. Try again!");
+				} else
+				{
+					//PLAYER BOUNCE BACK
+					BounceBack(other.transform.position);
+					Manager.Game.Sound.PlayQuickSound(botHitSound);
+				}
+			}
+			
+		}
 	}
 
 	void OnTriggerEnter(Collider other)

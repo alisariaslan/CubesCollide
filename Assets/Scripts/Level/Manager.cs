@@ -1,6 +1,7 @@
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
@@ -33,7 +34,7 @@ public class Manager : MonoBehaviour
 	[Header("Chat Settings")]
 	public float chatClearInterval = 1.5f;
 
-	private void Start()
+	 void Start()
 	{
 		Game = new Game();
 		if (Application.isMobilePlatform || isMobileDevice)
@@ -60,13 +61,24 @@ public class Manager : MonoBehaviour
 			await my_randomizer.GenerateBots();
 			await my_randomizer.SpawnMyPlayer();
 		}
+		else
+		{
+			Game.Ground.Object = GameObject.Find("Ground");
+		}
 		await Task.Delay(1000); //Waiting for Start Funcs
 		Game.Camera.Controller.LookAtThePlayer(true);
 		ToggleUI();
 		await Task.Delay(100);
 		Manager.Game.General.OtoButton.GetComponent<ButtonPressed>().CheckOto();
 		await Task.Delay(100);
-		Game.Chat.Controller.AnnounceBots();
+		_ =  Game.Chat.Controller.AnnounceBots();
+		int i = 0;
+		foreach (var item in Manager.Game.Bots)
+		{
+			item.Controller.localFreeze = false;
+			item.Controller.botIndex = i;
+			i++;
+		}
 	}
 
 	public void StopGame()

@@ -10,7 +10,7 @@ namespace Assets.Scripts.Models
 		public GameObject PauseButton { get; set; }
 		public GameObject Menu { get; set; }
 		public string FoodTag { get; set; }
-		public string BotTag { get; set; }
+		public string BotTag { get; set; } = "Bot";
 		public string WallTag { get; private set; } = "Wall";
 		public void ToggleOto()
 		{

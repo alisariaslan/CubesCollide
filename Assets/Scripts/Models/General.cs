@@ -12,7 +12,7 @@ namespace Assets.Scripts.Models
 		public float PlayerScore { get { return PlayerScore_; } set { PlayerScore_ = value; } }
 		public float MaxObjectSpeed { get; set; } = 3;
 		public bool IsMobileDevice { get; set; }
-		public bool IsPaused { get; set; }
+		public bool IsPaused { get; set; } = true;
 		public GameObject OtoButton { get; set; }
 		public GameObject PauseButton { get; set; }
 		public LevelController LevelController { get; set; }

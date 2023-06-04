@@ -158,7 +158,7 @@ public class Manager : MonoBehaviour
 		Destroy(Game.Ground.Object);
 		Destroy(Game.Player.Object);
 		Game.Canvas.Controller.SafeCursorVisibleShow(true);
-		Game.General.IsPaused = false;
+		Game.General.IsPaused = true;
 	}
 
 	public void Pause()

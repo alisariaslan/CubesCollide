@@ -73,10 +73,12 @@ public class LevelController : MonoBehaviour
 
 	private void Update()
 	{
-		if(!Manager.Game.General.IsPaused)
+		if(Manager.Game.General.IsPaused)
 		{
 			if (Input.GetKeyDown(KeyCode.F12))
 				Manager.Game.General.LevelController.UnlockNextLevel(true);
+			if (Input.GetKeyDown(KeyCode.F11))
+				Manager.Game.General.LevelController.ResetLevels();
 		}
 	}
 

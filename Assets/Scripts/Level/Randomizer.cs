@@ -171,7 +171,7 @@ public class Randomizer : MonoBehaviour
 			}
 			if (optimizePlayerForGM)
 			{
-				Manager.Game.General.MaxObjectSpeed = 1 + map_scale / 4;
+				Manager.Game.General.MaxObjectSpeed = 1 + map_scale / 2;
 			}
 			if (optimizeBotForGM)
 			{

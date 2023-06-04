@@ -56,23 +56,9 @@ public class CameraController : MonoBehaviour
 	public void CalculateChanges()
 	{
 		float x = 0;
-		float y = 0;
-		if (target.transform.localScale.y < .1f)
-		{
-			y = target.transform.localScale.y * 10f;
-			smoothPositionTime = 0.3f;
-		}
-		else if (target.transform.localScale.y < 1)
-		{
-			y = target.transform.localScale.y * 3f;
-			smoothPositionTime = 0.13f;
-		}
-		else
-		{
-			y = target.transform.localScale.y * 1.5f;
-			smoothPositionTime = 0.3f;
-		}
-		float z = y * -1.5f;
+		float y = target.transform.localScale.y * 1.5f;
+		smoothPositionTime = 0.25f;
+		float z = y * -2f;
 		north = new Vector3(x, y, z);
 		west = new Vector3(z, y, x);
 		south = new Vector3(x, y, -z);

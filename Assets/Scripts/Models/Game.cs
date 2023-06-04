@@ -11,8 +11,10 @@ namespace Assets.Scripts.Models
 		public Camera Camera;
 		public General General;
 		public Chat Chat;
-		public Sound Sound;
-
+		public Audio Audio;
+		public Canvas Canvas;
+		public Random Random;
+		public Calculation Calculation;
 		public Game() {
 			this.Player = new Player();
 			this.Ground = new Ground();
@@ -21,7 +23,10 @@ namespace Assets.Scripts.Models
 			this.Camera = new Camera();
 			this.General = new General();
 			this.Chat = new Chat();
-			this.Sound = new Sound();
+			this.Audio = new Audio();
+			this.Canvas = new Canvas();
+			this.Random = new Random();
+			this.Calculation = new Calculation();
 		}
 	}
 }

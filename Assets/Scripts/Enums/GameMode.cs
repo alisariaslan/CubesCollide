@@ -1,0 +1,8 @@
+﻿public enum GameMode
+{
+	MULTIPLAYER,
+	BETHEBIGGEST,
+	UNDERATOM,
+	SURVIVAL,
+	PURGE
+}

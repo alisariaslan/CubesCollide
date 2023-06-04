@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameModes xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <BETHEBIGGEST>
+    <Levels>
+      <Level>
+        <levelNo>1</levelNo>
+        <isLocked>true</isLocked>
+      </Level>
+      <Level>
+        <levelNo>2</levelNo>
+        <isLocked>true</isLocked>
+      </Level>
+      <Level>
+        <levelNo>3</levelNo>
+        <isLocked>true</isLocked>
+      </Level>
+      <Level>
+        <levelNo>4</levelNo>
+        <isLocked>true</isLocked>
+      </Level>
+      <Level>
+        <levelNo>5</levelNo>
+        <isLocked>true</isLocked>
+      </Level>
+      <Level>
+        <levelNo>6</levelNo>
+        <isLocked>true</isLocked>
+      </Level>
+      <Level>
+        <levelNo>7</levelNo>
+        <isLocked>true</isLocked>
+      </Level>
+      <Level>
+        <levelNo>8</levelNo>
+        <isLocked>true</isLocked>
+      </Level>
+      <Level>
+        <levelNo>9</levelNo>
+        <isLocked>true</isLocked>
+      </Level>
+      <Level>
+        <levelNo>10</levelNo>
+        <isLocked>true</isLocked>
+      </Level>
+    </Levels>
+  </BETHEBIGGEST>
+</GameModes>

@@ -1,7 +1,5 @@
 using Assets.Scripts.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
@@ -10,12 +8,6 @@ public class Manager : MonoBehaviour
 
 	[Header("Game Objects")]
 	public GameObject mainCam;
-	public GameObject extendedUI;
-	public GameObject pauseUI;
-	public List<GameObject> beforePauseUI;
-
-	[Header("General Settings")]
-	public bool randomizeAfterStart = true;
 
 	[Header("Player Settings")]
 	public bool playerOtoEnabledStart = true;
@@ -25,117 +17,170 @@ public class Manager : MonoBehaviour
 	public bool spawnBots = true;
 	public bool spawnFoods = true;
 
-	[Header("Object Settings")]
-	public float maxObjectSize = 30;
-
 	[Header("Device Settings")]
 	public bool isMobileDevice = false;
 
 	[Header("Chat Settings")]
-	public float chatClearInterval = 1.5f;
+	public float chatClearInterval = 5f;
 
-	 void Start()
+	private void Start()
 	{
 		Game = new Game();
 		if (Application.isMobilePlatform || isMobileDevice)
 			Game.General.IsMobileDevice = true;
 		Game.Player.IsOtoEnabled = playerOtoEnabledStart;
-		Game.General.Menu = GameObject.Find("Menu");
 		Game.Chat.ClearInterval = chatClearInterval;
+		Game.General.Controller = this;
 	}
 
-	public async void StartGame()
+	private void OnDestroy()
 	{
-		Cursor.visible = false;
-		Manager.Game.General.Menu.GetComponent<Animator>().Play("MenuUp");
-		Manager.Game.Sound.Controller.SwitchToIngameMusic();
-		ToggleExtendedUI();
-		Randomizer my_randomizer = FindFirstObjectByType<Randomizer>();
-		if (randomizeAfterStart)
+		Game = null;
+	}
+
+	public void ExitApp()
+	{
+		Debug.Log("Quit Game");
+		Application.Quit();
+	}
+
+	public void QuickStart()
+	{
+		Debug.Log(Game.General.SelectedGameMode);
+		int latestLevel = Manager.Game.General.LevelController.GetLatestUnlockedLevel(Game.General.SelectedGameMode);
+		Game.General.SelectedGameLevels.Clear();
+		Game.General.SelectedGameLevels.Add(latestLevel);
+		StartGame(false);
+	}
+	public async void StartGame(bool isTryAgain)
+	{
+		Game.General.IsPaused = true;
+		if (!isTryAgain)
+			Game.General.SelectedGameLevel = Game.General.SelectedGameLevels[new System.Random().Next(0, Game.General.SelectedGameLevels.Count)];
+		Game.General.PlayerScore = 0;
+		Game.Canvas.Controller.DisableMenuUI();
+		Game.Canvas.Controller.DisableExtendedUI();
+		Game.Canvas.Controller.SafeCursorVisibleShow(false);
+		Game.Audio.Controller.SwitchToIngameMusic();
+		Game.Audio.SoundSource.Stop();
+		await Game.Random.Controller.RandomizeGround();
+		Game.Camera.Controller.LookAtTheGround();
+		await Game.Random.Controller.CalculatePoints();
+		Game.Random.Controller.OptimizeRandomize();
+		await Game.Random.Controller.GenerateFoods();
+		await Game.Random.Controller.GenerateBots();
+		//Game.Random.Controller.RandomizeSpawnPositions();
+		await Game.Random.Controller.SpawnMyPlayer();
+		await Task.Delay(1000); //Waiting for Player Start Funcs
+		await Game.Random.Controller.CalculateAvaibleness();
+		Game.Canvas.Controller.EnableFixedUI();
+		Game.Camera.Controller.LookAtThePlayer();
+		await Task.Delay(1000); //Waiting for UI Start Funcs
+		Game.General.Counters.UpdatePlayers();
+		Game.General.Counters.UpdateFoods();
+		Game.General.Counters.UpdateScore();
+		Game.Canvas.Controller.EnableControllersUI();
+		Game.General.OtoButton.GetComponent<ButtonPressed>().CheckOto();
+		var text = ("Game mode: " + Game.General.SelectedGameMode);
+		text += ("\nGame level: " + Game.General.SelectedGameLevel);
+		await Game.Chat.Controller.Text_Line(text);
+		if (Game.General.SelectedGameMode == GameMode.BETHEBIGGEST)
 		{
-			await my_randomizer.RandomizeGround();
-			Game.Camera.Controller.LookAtTheGround();
-			await my_randomizer.CalculateAvaibleness();
-			await my_randomizer.CalculatePoints();
-			await my_randomizer.GenerateFoods();
-			await my_randomizer.GenerateBots();
-			await my_randomizer.SpawnMyPlayer();
+			text = ("Eat in order, Be the Biggest!");
+			_= Game.Chat.Controller.Text_Line(text);
+		}
+		Game.General.IsPaused = false;
+	}
+
+	public void TryAgain(bool realy)
+	{
+		Game.Canvas.Controller.DisableTryAgainUI();
+		if (realy)
+			StartGame(true);
+		else
+			StopGame(false);
+	}
+
+	public void NextLevel(bool realy)
+	{
+		Game.Canvas.Controller.DisableWinUI();
+		if (realy)
+		{
+			Destroy(Game.Ground.Object);
+			Game.Ground.Object = null;
+			StartGame(false);
 		}
 		else
-		{
-			Game.Ground.Object = GameObject.Find("Ground");
-		}
-		await Task.Delay(1000); //Waiting for Start Funcs
-		Game.Camera.Controller.LookAtThePlayer(true);
-		ToggleUI();
-		await Task.Delay(100);
-		Manager.Game.General.OtoButton.GetComponent<ButtonPressed>().CheckOto();
-		await Task.Delay(100);
-		_ =  Game.Chat.Controller.AnnounceBots();
-		int i = 0;
-		foreach (var item in Manager.Game.Bots)
-		{
-			item.Controller.localFreeze = false;
-			item.Controller.botIndex = i;
-			i++;
-		}
+			StopGame(false);
 	}
 
-	public void StopGame()
+	public async void PlayerDead()
 	{
-		TogglePause();
-		ToggleUI();
-		ToggleExtendedUI();
-		Manager.Game.General.Menu.GetComponent<Animator>().Play("MenuDown");
-		Manager.Game.Sound.Controller.SwitchToMenuMusic();
-		Game.Camera.Controller.LookAtTheDancers();
-		foreach (var item in Manager.Game.Foods)
-			GameObject.Destroy(item.Object);
-		foreach (var item in Manager.Game.Bots)
-			GameObject.Destroy(item.Object);
-		FindFirstObjectByType<EasyObjectsFade>().playerTransform = null;
-		GameObject.Destroy(Manager.Game.Ground.Object);
-		GameObject.Destroy(Manager.Game.Player.Object);
-		Cursor.visible = true;
+		Game.Canvas.Controller.DisableControllersUI();
+		Game.Audio.Controller.StopMusic();
+		await Game.Chat.Controller.Text_Line(Game.Player.DeadReason+"\nTry Again!");
+		Game.Camera.Controller.LookAtTheGround();
+		Game.Canvas.Controller.DisableFixedUI();
+		Game.Canvas.Controller.EnableTryAgainUI();
+		Game.Canvas.Controller.SafeCursorVisibleShow(true);
 	}
 
-	public void TogglePause()
+	public async void PlayerWin()
 	{
-		Manager.Game.Sound.Controller.ToggleMusic(true);
-		var paused = Manager.Game.General.IsPaused;
+		Game.General.IsPaused = true;
+		Game.General.Counters.UpdateScale();
+		if (Game.Audio.Controller.soundEnabled)
+			Game.Audio.SoundSource.PlayOneShot(Game.Audio.Controller.meWin);
+		Game.Canvas.Controller.DisableControllersUI();
+		Game.Audio.Controller.StopMusic();
+		Manager.Game.General.LevelController.UnlockNextLevel(false);
+		await Game.Chat.Controller.Text_Line("Your cube has Win!");
+		Destroy(Game.Player.Object);
+		Game.Camera.Controller.LookAtTheGround();
+		Game.Canvas.Controller.DisableFixedUI();
+		Game.Canvas.Controller.EnableWinUI();
+		Game.Canvas.Controller.SafeCursorVisibleShow(true);
+	}
+
+	public void StopGame(bool paused)
+	{
 		if (paused)
-		{
-			Cursor.visible = false;
-			paused = false;
-			pauseUI.SetActive(false);
-			foreach (var item in beforePauseUI)
-				item.SetActive(true);
-		}
-		else
-		{
-			Cursor.visible = true;
-			paused = true;
-			pauseUI.SetActive(true);
-			foreach (var item in beforePauseUI)
-				item.SetActive(false);
-		}
-		Manager.Game.General.IsPaused = paused;
+			Game.Canvas.Controller.DisablePauseUI();
+		Game.Canvas.Controller.DisableControllersUI();
+		Game.Canvas.Controller.EnableExtendedUI();
+		Game.Canvas.Controller.EnableMenuUI();
+		Game.Audio.Controller.SwitchToMenuMusic();
+		Game.Camera.Controller.LookAtTheDancers();
+		foreach (var item in Game.Foods)
+			Destroy(item.Object);
+		foreach (var item in Game.Bots)
+			Destroy(item.Object);
+		Destroy(Game.Ground.Object);
+		Destroy(Game.Player.Object);
+		Game.Canvas.Controller.SafeCursorVisibleShow(true);
+		Game.General.IsPaused = false;
 	}
 
-	public void ToggleExtendedUI()
+	public void Pause()
 	{
-		if (extendedUI.activeSelf)
-			extendedUI.SetActive(false);
-		else
-			extendedUI.SetActive(true);
+		if (Game.General.IsPaused)
+			return;
+		Game.Canvas.Controller.SafeCursorVisibleShow(true);
+		Game.Audio.Controller.StopMusic();
+		Game.General.IsPaused = true;
+		Game.Canvas.Controller.DisableFixedUI();
+		Game.Canvas.Controller.EnablePauseUI();
 	}
 
-	public void ToggleUI()
+	public void Resume()
 	{
-		if (isMobileDevice)
-			FindFirstObjectByType<CanvasController>().DisplayMobileUI();
-		else
-			FindFirstObjectByType<CanvasController>().DisplayDesktopUI();
+		if (!Game.General.IsPaused)
+			return;
+		Game.Canvas.Controller.SafeCursorVisibleShow(false);
+		Game.Audio.Controller.PlayMusic();
+		Game.General.IsPaused = false;
+		Game.Canvas.Controller.EnableFixedUI();
+		Game.Canvas.Controller.DisablePauseUI();
 	}
 
 }

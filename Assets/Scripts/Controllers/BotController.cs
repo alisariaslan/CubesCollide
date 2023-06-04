@@ -1,32 +1,59 @@
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class BotController : MonoBehaviour
 {
+	public int Index;
 	public int botIndex = 0;
 	public float movementSpeed = 1.0f;
-	public bool localFreeze = true;
 	public Vector2 direction = Vector2.zero;
 	private float inputX = 0;
 	private float inputY = 0;
 
-	private void StartBot()
+	private Compass compass_ { get; set; } = new Compass();
+	public Compass compass
 	{
-		
-		localFreeze = false;
+		get { return compass_; }
+		set
+		{
+			compass_ = value;
+			if (compass_ == Compass.North)
+				direction = Vector2.up;
+			else if (compass_ == Compass.South)
+				direction = Vector2.down;
+			else if (compass_ == Compass.West)
+				direction = Vector2.left;
+			else if (compass_ == Compass.East)
+				direction = Vector2.right;
+		}
+	}
+
+	private void Start()
+	{
+		switch (new System.Random().Next(0, 4))
+		{
+			case 0:
+				compass = Compass.North;
+				break;
+			case 1:
+				compass = Compass.South;
+				break;
+			case 2:
+				compass = Compass.West;
+				break;
+			case 3:
+				compass = Compass.East;
+				break;
+		}
 	}
 
 	private void Update()
 	{
-		if (localFreeze)
+		if (Manager.Game.General.IsPaused)
 			return;
 
 		inputX = direction.x;
 		inputY = direction.y;
-
-		if (Manager.Game.General.IsPaused)
-			return;
 
 		float gposX = gameObject.transform.position.x;
 		float gposY = gameObject.transform.position.y;
@@ -40,16 +67,44 @@ public class BotController : MonoBehaviour
 		{ gameObject.transform.position = new Vector3(gposX, gposY, gposZ + (Time.deltaTime * movementSpeed)); }
 		else if (inputY < 0)
 		{ gameObject.transform.position = new Vector3(gposX, gposY, gposZ - (Time.deltaTime * movementSpeed)); }
-
 	}
 
 	private void OnCollisionEnter(Collision other)
 	{
-		Debug.Log("OnCollisionEnter: " + other.transform.tag);
+		if (other.transform.CompareTag("Player") || other.transform.CompareTag("Bot") || other.transform.CompareTag("Wall"))
+			ReverseCompass();
 	}
 
-	private void OnTriggerEnter(Collider other)
+	private void ReverseCompass()
 	{
-		Debug.Log("OnTriggerEnter: " + other.transform.tag);
+		switch (compass)
+		{
+			case Compass.North:
+				compass = Compass.South;
+				break;
+			case Compass.West:
+				compass = Compass.East;
+				break;
+			case Compass.East:
+				compass = Compass.West;
+				break;
+			case Compass.South:
+				compass = Compass.North;
+				break;
+		}
+	}
+
+	private void RandomReverseCompass()
+	{
+		Compass myNewWay = Compass.North;
+		while (true)
+		{
+			int rnd = new System.Random().Next(0, 4);
+			myNewWay = (Compass)rnd;
+			if (myNewWay != compass)
+				break;
+		}
+		compass = myNewWay;
+
 	}
 }

@@ -5,6 +5,7 @@ namespace Assets.Scripts.Models
 	public class Player
 	{
 		public string Name { get; set; }
+		public string DeadReason { get; set; }
 		public GameObject Object { get; set; }
 		public Vector3 SpawnPosition { get; set; }
 		public bool IsOtoEnabled { get; set; }

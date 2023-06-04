@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,89 +6,41 @@ using UnityEngine.UI;
 public class ChatController : MonoBehaviour
 {
 	private Text text;
-	private List<string> lastTenString;
 
 	void Start()
 	{
-		Manager.Game.Chat.Object = gameObject;
+		Manager.Game.Chat.Object = this.gameObject;
 		text = GetComponent<Text>();
-		text.text = "";
-		lastTenString = new List<string>(); 
-		timer = Manager.Game.Chat.ClearInterval;
 	}
 
-	float timer = 0f;
-	bool isEnabled = false;
-
-	void Update()
+	public async Task Text_PlayerJoined(string playerName)
 	{
-		if (isEnabled)
-		{
-			timer -= Time.deltaTime;
-			if (timer < 0)
-			{
-				ClearTextOne();
-				timer = Manager.Game.Chat.ClearInterval;
-			}
-		}
+		text.text = (char.ToUpper(playerName[0], CultureInfo.InvariantCulture) + playerName.Substring(1) + " is joined.");
+		Manager.Game.Canvas.Controller.ChatToggle();
+		await Task.Delay(500); //Enter
+		await Task.Delay(3000); //Stay
+		Manager.Game.Canvas.Controller.ChatExit();
+		await Task.Delay(500); //Exit
 	}
 
-	public void Text_PlayerJoined(string playerName)
+	public async Task Text_PlayerDead(string playerName)
 	{
-		lastTenString.Add("Player \"" + playerName + "\" is joined.");
-		CompleteText();
+		text.text = (char.ToUpper(playerName[0], CultureInfo.InvariantCulture) + playerName.Substring(1) + " is eaten.");
+		Manager.Game.Canvas.Controller.ChatToggle();
+		await Task.Delay(500); //Enter
+		await Task.Delay(3000); //Stay
+		Manager.Game.Canvas.Controller.ChatExit();
+		await Task.Delay(500); //Exit
 	}
 
-	public void Text_Line(string str)
+	public async Task Text_Line(string str)
 	{
-		lastTenString.Add(str);
-		CompleteText();
+		text.text = (str);
+		Manager.Game.Canvas.Controller.ChatToggle();
+		await Task.Delay(500); //Enter
+		await Task.Delay(3000); //Stay
+		Manager.Game.Canvas.Controller.ChatExit();
+		await Task.Delay(500); //Exit
 	}
-
-	public void Text_Paragraph(string paragraph)
-	{
-
-	}
-
-	public async Task AnnounceBots()
-	{
-		foreach (var item in Manager.Game.Bots)
-		{
-			await Task.Delay(10);
-			Text_PlayerJoined(item.Name);
-		}
-	}
-
-	private void CompleteText()
-	{
-		while (lastTenString.Count > 10)
-			lastTenString.RemoveAt(0);
-
-		text.text = "";
-		foreach (var item in lastTenString)
-			text.text += item + "\n";
-
-		isEnabled = true;
-		timer = Manager.Game.Chat.ClearInterval;
-	}
-
-	public void ClearTextOne()
-	{
-		if (lastTenString.Count > 0)
-			lastTenString.RemoveAt(0);
-
-		Debug.Log("Deleted");
-
-		if (lastTenString.Count == 0)
-			isEnabled = false;
-
-		text.text = "";
-		foreach (var item in lastTenString)
-			text.text += item + "\n";
-	}
-
-
-
-
 
 }

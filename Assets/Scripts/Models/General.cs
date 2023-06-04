@@ -1,17 +1,26 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
 	public class General
 	{
+		public GameMode SelectedGameMode { get; set; }
+		public List<int> SelectedGameLevels{ get; set; } = new List<int>();
+		public int SelectedGameLevel { get; set; }
+		private float PlayerScore_ { get; set; } = 0;
+		public float PlayerScore { get { return PlayerScore_; } set { PlayerScore_ = value; } }
+		public float MaxObjectSpeed { get; set; } = 3;
 		public bool IsMobileDevice { get; set; }
 		public bool IsPaused { get; set; }
 		public GameObject OtoButton { get; set; }
 		public GameObject PauseButton { get; set; }
-		public GameObject Menu { get; set; }
-		public string FoodTag { get; set; }
-		public string BotTag { get; set; } = "Bot";
+		public LevelController LevelController { get; set; }
+		public string FoodTag { get; private set; } = "Food";
+		public string BotTag { get; private set; } = "Bot";
 		public string WallTag { get; private set; } = "Wall";
+		public Counters Counters { get; set; }
+		public Manager Controller { get; set; }
 		public void ToggleOto()
 		{
 			if (OtoButton == null)

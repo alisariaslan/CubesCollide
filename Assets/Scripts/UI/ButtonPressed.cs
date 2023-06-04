@@ -82,7 +82,6 @@ public class ButtonPressed : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
 		if (isPause)
 			TogglePause();
-
 	}
 
 	public void OnPointerUp(PointerEventData eventData)
@@ -116,12 +115,12 @@ public class ButtonPressed : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
 		if (Manager.Game.Player.IsOtoEnabled)
 		{
-			Manager.Game.Chat.Controller.Text_Line("OTO Camera Disabled.");
+			_ = Manager.Game.Chat.Controller.Text_Line("OTO Camera Disabled.");
 			Manager.Game.Player.IsOtoEnabled = false;
 		}
 		else
 		{
-			Manager.Game.Chat.Controller.Text_Line("OTO Camera Enabled.");
+			_=Manager.Game.Chat.Controller.Text_Line("OTO Camera Enabled.");
 			Manager.Game.Player.IsOtoEnabled = true;
 		}
 
@@ -130,7 +129,7 @@ public class ButtonPressed : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
 	public void TogglePause()
 	{
-		FindFirstObjectByType<Manager>().TogglePause();
+		FindFirstObjectByType<Manager>().Pause();
 	}
 
 

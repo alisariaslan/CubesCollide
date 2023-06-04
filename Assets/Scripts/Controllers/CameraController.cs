@@ -1,7 +1,5 @@
-using Assets.Scripts.Models;
-using UnityEditor;
+using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class CameraController : MonoBehaviour
 {
@@ -15,109 +13,149 @@ public class CameraController : MonoBehaviour
 	private Vector3 west;
 	private Vector3 east;
 	private Vector3 south;
-
-	private void Start()
+	public Compass Direction_ { get; set; } = Compass.North;
+	public Compass Direction
 	{
+		get { return Direction_; }
+		set
+		{
+			if (value == Compass.North)
+				offSet = north;
+			else if (value == Compass.South)
+				offSet = south;
+			else if (value == Compass.West)
+				offSet = west;
+			else if (value == Compass.East)
+				offSet = east;
+			Direction_ = value;
+		}
+	}
+
+	async void Start()
+	{
+		await Task.Delay(10);
 		Manager.Game.Camera.Object = this.gameObject;
 		Manager.Game.Camera.SpawnPosition = transform.position;
 		Manager.Game.Camera.SpawnRotation = transform.rotation;
-		Manager.Game.Camera.SpawnOffset = offSet;
+		Manager.Game.Camera.SpawnOffset = GetComponent<CameraController>().offSet;
 	}
-
-	public void LookAtThePlayer(bool lookCenterToMap)
+	public void LookAtThePlayer()
 	{
-		var player = Manager.Game.Player.Object;
-
-		if (player == null)
+		target = Manager.Game.Player.Object; if (target == null)
 		{
 			Debug.Log("PLAYER IS NULL!");
 			return;
 		}
+		GetComponent<EasyObjectsFade>().playerTransform = target.transform;
+		//LOOK TO CENTER OF MAP
+		if (target.transform.position.z > 0)
+			Direction = Compass.South;
+		else Direction = Compass.North;
+	}
 
-		target = player;
-		offSet = Manager.Game.Camera.SpawnPosition - target.transform.position;
-		var x = offSet.x;
-		var y = offSet.y;
-		var z = offSet.z;
-
-		x = 0;
-		y /= 2;
-		z = -5;
-		offSet = new Vector3(x, y, z);
-		north = offSet;
-		west = new Vector3(-5, y, 0);
-		south = new Vector3(0, y, 5);
-		east = new Vector3(5, y, 0);
-
-		if (lookCenterToMap) //ONLY VERTICAL SOLUTIONS
+	public void CalculateChanges()
+	{
+		float x = 0;
+		float y = 0;
+		if (target.transform.localScale.y < .1f)
 		{
-			var playerPos = Manager.Game.Player.Object.transform.position;
-			if (playerPos.z > 0)
-				offSet = south;
-			else offSet = north;
+			y = target.transform.localScale.y * 10f;
+			smoothPositionTime = 0.3f;
 		}
-
-
+		else if (target.transform.localScale.y < 1)
+		{
+			y = target.transform.localScale.y * 3f;
+			smoothPositionTime = 0.13f;
+		}
+		else
+		{
+			y = target.transform.localScale.y * 1.5f;
+			smoothPositionTime = 0.3f;
+		}
+		float z = y * -1.5f;
+		north = new Vector3(x, y, z);
+		west = new Vector3(z, y, x);
+		south = new Vector3(x, y, -z);
+		east = new Vector3(-z, y, x);
+		switch (Direction)
+		{
+			case Compass.North:
+				Direction = Compass.North;
+				break;
+			case Compass.West:
+				Direction = Compass.West;
+				break;
+			case Compass.East:
+				Direction = Compass.East;
+				break;
+			case Compass.South:
+				Direction = Compass.South;
+				break;
+		}
 	}
 
 	public void LookAtTheGround()
 	{
+		FindFirstObjectByType<EasyObjectsFade>().playerTransform = null;
 		var ground = Manager.Game.Ground.Object;
 		if (ground == null)
 			return;
-
 		var scale = Manager.Game.Ground.Size;
 		target = ground;
+		Direction = Compass.North;
 		offSet = new Vector3(scale * 2.5f, scale * 2.5f, scale * 5f);
 	}
 
 	public void LookAtTheDancers()
 	{
+		FindFirstObjectByType<EasyObjectsFade>().playerTransform = null;
 		target = null;
 		transform.position = Manager.Game.Camera.SpawnPosition;
 		transform.rotation = Manager.Game.Camera.SpawnRotation;
+		Direction = Compass.North;
 		offSet = Manager.Game.Camera.SpawnOffset;
 	}
 
 	public void CompassRight()
 	{
-		if (offSet == north)
-			offSet = west;
-		else if (offSet == west)
-			offSet = south;
-		else if (offSet == south)
-			offSet = east;
-		else if (offSet == east)
-			offSet = north;
+		if (Direction == Compass.North)
+			Direction = Compass.West;
+		else if (Direction == Compass.West)
+			Direction = Compass.South;
+		else if (Direction == Compass.South)
+			Direction = Compass.East;
+		else if (Direction == Compass.East)
+			Direction = Compass.North;
+
 	}
 
 	public void CompassLeft()
 	{
-		if (offSet == north)
-			offSet = east;
-		else if (offSet == east)
-			offSet = south;
-		else if (offSet == south)
-			offSet = west;
-		else if (offSet == west)
-			offSet = north;
+		if (Direction == Compass.North)
+			Direction = Compass.East;
+		else if (Direction == Compass.East)
+			Direction = Compass.South;
+		else if (Direction == Compass.South)
+			Direction = Compass.West;
+		else if (Direction == Compass.West)
+			Direction = Compass.North;
 	}
 
 	public void CompassUp()
 	{
-		if (offSet == east)
-			offSet = west;
-		else if (offSet == west)
-			offSet = east;
-		else if (offSet == north)
-			offSet = south;
-		else if (offSet == south)
-			offSet = north;
+		if (Direction == Compass.East)
+			Direction = Compass.West;
+		else if (Direction == Compass.West)
+			Direction = Compass.East;
+		else if (Direction == Compass.North)
+			Direction = Compass.South;
+		else if (Direction == Compass.South)
+			Direction = Compass.North;
 	}
 
 	public void CompassReset()
 	{
-		offSet = north;
+		Direction = Compass.North;
 	}
 
 	private void LateUpdate()
@@ -133,6 +171,9 @@ public class CameraController : MonoBehaviour
 			targetRotation.y = rotationY;
 
 		transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetRotation), Time.time * smoothRotationTime);
+
+		if (target.CompareTag("Player"))
+			CalculateChanges();
 	}
 
 }

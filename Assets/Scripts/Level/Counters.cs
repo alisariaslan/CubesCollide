@@ -49,8 +49,17 @@ public class Counters : MonoBehaviour
 		if (Manager.Game.General.SelectedGameMode == GameMode.BETHEBIGGEST)
 		{
 			var index = 0;
+			var ps = Manager.Game.General.DefaultPayerSpeed;
+			var bs = Manager.Game.General.DefaultBotSpeed;
 			foreach (var item in Manager.Game.Bots)
 			{
+				if(item.IsDead)
+				{
+					ps += 0.025f;
+					bs += 0.05f;
+					Manager.Game.General.PlayerSpeed = ps;
+					Manager.Game.General.BotSpeed = bs;
+				}
 				if (item.IsDead && index < Manager.Game.Bots.Count -1 && !Manager.Game.Bots[index + 1].IsDead)
 				{
 					var nextItem = Manager.Game.Bots[index + 1];

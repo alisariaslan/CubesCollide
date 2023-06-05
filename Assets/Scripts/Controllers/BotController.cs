@@ -5,7 +5,6 @@ public class BotController : MonoBehaviour
 {
 	public int Index;
 	public int botIndex = 0;
-	public float movementSpeed = 1.0f;
 	public Vector2 direction = Vector2.zero;
 	private float inputX = 0;
 	private float inputY = 0;
@@ -59,6 +58,7 @@ public class BotController : MonoBehaviour
 		float gposY = gameObject.transform.position.y;
 		float gposZ = gameObject.transform.position.z;
 
+		float movementSpeed = Manager.Game.General.BotSpeed;
 		if (inputX > 0)
 		{ gameObject.transform.position = new Vector3(gposX + (Time.deltaTime * movementSpeed), gposY, gposZ); }
 		else if (inputX < 0)

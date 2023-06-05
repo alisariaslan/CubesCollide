@@ -10,7 +10,10 @@ namespace Assets.Scripts.Models
 		public int SelectedGameLevel { get; set; }
 		private float PlayerScore_ { get; set; } = 0;
 		public float PlayerScore { get { return PlayerScore_; } set { PlayerScore_ = value; } }
-		public float MaxObjectSpeed { get; set; } = 3;
+		public float DefaultPayerSpeed { get; set; } = 3;
+		public float DefaultBotSpeed { get; set; } = 1;
+		public float PlayerSpeed { get; set; } = 3;
+		public float BotSpeed { get; set; } = 1;
 		public bool IsMobileDevice { get; set; }
 		public bool IsPaused { get; set; } = true;
 		public GameObject OtoButton { get; set; }

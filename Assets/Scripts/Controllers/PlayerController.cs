@@ -1,14 +1,11 @@
 using Assets.Scripts;
 using System;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
 	public float movementSpeed = 1.0f;
-	private float maxSpeed;
 	public Vector2 direction = Vector2.zero;
 	public bool localFreeze = false;
 	public bool freezeInput = false;
@@ -16,7 +13,7 @@ public class PlayerController : MonoBehaviour
 	async void Start()
 	{
 		Manager.Game.Player.Object = this.gameObject;
-		maxSpeed = movementSpeed = Manager.Game.General.MaxObjectSpeed;
+		movementSpeed = Manager.Game.General.PlayerSpeed;
 		await Task.Delay(1000);
 		GetComponent<BoxCollider>().enabled = true;
 	}
@@ -46,9 +43,9 @@ public class PlayerController : MonoBehaviour
 					if (Manager.Game.Audio.Controller.soundEnabled)
 						Manager.Game.Audio.SoundSource.PlayOneShot(Manager.Game.Audio.Controller.eatCube);
 					var botController = other.transform.GetComponent<BotController>();
-				
+
 					Manager.Game.Bots[botController.Index].IsDead = true;
-					_= Manager.Game.Chat.Controller.Text_PlayerDead(Manager.Game.Bots[botController.Index].Name);
+					_ = Manager.Game.Chat.Controller.Text_PlayerDead(Manager.Game.Bots[botController.Index].Name);
 					GrowFromPlayer(other.transform);
 					Manager.Game.General.PlayerScore += other.transform.localScale.y;
 					Manager.Game.General.Counters.UpdateScore();
@@ -77,7 +74,7 @@ public class PlayerController : MonoBehaviour
 					if (Manager.Game.Audio.Controller.soundEnabled)
 						Manager.Game.Audio.SoundSource.PlayOneShot(Manager.Game.Audio.Controller.meDead);
 					Manager.Game.Player.DeadReason = "Your cube has eaten.";
-				Manager.Game.General.Controller.PlayerDead();
+					Manager.Game.General.Controller.PlayerDead();
 				}
 				else
 				{
@@ -117,7 +114,7 @@ public class PlayerController : MonoBehaviour
 				Manager.Game.Foods[food_controller.Index].IsEaten = true;
 				Manager.Game.Foods[food_controller.Index].EatenTime = DateTime.Now;
 				GrowFromFood(other.transform);
-				Manager.Game.General.PlayerScore += other.transform.localScale.y; 
+				Manager.Game.General.PlayerScore += other.transform.localScale.y;
 				Manager.Game.General.Counters.UpdateScore();
 				Destroy(other.gameObject);
 				Manager.Game.General.Counters.UpdateFoods();
@@ -187,25 +184,49 @@ public class PlayerController : MonoBehaviour
 			Manager.Game.Camera.Controller.CompassLeft();
 		else if (Input.GetKeyDown(KeyCode.RightArrow))
 			Manager.Game.Camera.Controller.CompassRight();
-		
+
 		if (localFreeze || Manager.Game.General.IsPaused)
 			return;
 
-		if (Input.GetKeyDown(KeyCode.F12))
+		if (Input.GetKeyDown(KeyCode.F12)) //HACK
 			Manager.Game.General.Controller.PlayerWin();
-
-		if (Manager.Game.General.SelectedGameMode != GameMode.BETHEBIGGEST)
+		else if(Input.GetKeyDown(KeyCode.F11))  //HACK
 		{
-			movementSpeed = Manager.Game.Calculation.Calculation_Set_Speed(maxSpeed, transform.localScale.y);
+			if (Manager.Game.Audio.Controller.soundEnabled)
+				Manager.Game.Audio.SoundSource.PlayOneShot(Manager.Game.Audio.Controller.eatCube);
+			var bot = Manager.Game.Bots[0];
+			foreach (var item in Manager.Game.Bots)
+			{
+				if(!item.IsDead)
+				{
+					bot = item;
+					break;
+				}
+			}
+			var botController = bot.Object.transform.GetComponent<BotController>();
+			Manager.Game.Bots[botController.Index].IsDead = true;
+			_ = Manager.Game.Chat.Controller.Text_PlayerDead(Manager.Game.Bots[botController.Index].Name);
+			GrowFromPlayer(bot.Object.transform);
+			Manager.Game.General.PlayerScore += bot.Object.transform.localScale.y;
+			Manager.Game.General.Counters.UpdateScore();
+			Destroy(bot.Object.gameObject);
+			Manager.Game.General.Counters.UpdatePlayers();
+		}
+
+		if (Manager.Game.General.SelectedGameMode == GameMode.BETHEBIGGEST)
+		{
+			movementSpeed = Manager.Game.General.PlayerSpeed;
+			Manager.Game.General.Counters.UpdateScale();
+		}
+		else
+		{
+			movementSpeed = Manager.Game.Calculation.Calculation_Set_Speed(Manager.Game.General.PlayerSpeed, transform.localScale.y);
 			everySecond -= Time.deltaTime;
 			if (everySecond < 0)
 			{
 				Manager.Game.Calculation.Calculation_Decrease_Scale(transform);
 				everySecond = 1;
 			}
-		} else
-		{
-			Manager.Game.General.Counters.UpdateScale();
 		}
 
 		if (transform.localScale.y < 0.01f)

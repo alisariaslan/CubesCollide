@@ -79,6 +79,7 @@ public class Manager : MonoBehaviour
 		Game.General.Counters.UpdatePlayers();
 		Game.General.Counters.UpdateFoods();
 		Game.General.Counters.UpdateScore();
+		Game.General.Counters.UpdateScale();
 		Game.Canvas.Controller.EnableControllersUI();
 		Game.General.OtoButton.GetComponent<ButtonPressed>().CheckOto();
 		var text = ("Game mode: " + Game.General.SelectedGameMode);

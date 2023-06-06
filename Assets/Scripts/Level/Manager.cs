@@ -27,7 +27,10 @@ public class Manager : MonoBehaviour
 	{
 		Game = new Game();
 		if (Application.isMobilePlatform || isMobileDevice)
+		{
+			Application.targetFrameRate = 60;
 			Game.General.IsMobileDevice = true;
+		}
 		Game.Player.IsOtoEnabled = playerOtoEnabledStart;
 		Game.Chat.ClearInterval = chatClearInterval;
 		Game.General.Controller = this;
@@ -117,6 +120,7 @@ public class Manager : MonoBehaviour
 
 	public async void PlayerDead()
 	{
+		Game.General.AdController.LoadInterstitialAd();
 		Game.Canvas.Controller.DisableControllersUI();
 		Game.Audio.Controller.StopMusic();
 		await Game.Chat.Controller.Text_Line(Game.Player.DeadReason+"\nTry Again!");
@@ -124,10 +128,12 @@ public class Manager : MonoBehaviour
 		Game.Canvas.Controller.DisableFixedUI();
 		Game.Canvas.Controller.EnableTryAgainUI();
 		Game.Canvas.Controller.SafeCursorVisibleShow(true);
+		Game.General.AdController.ShowAd();
 	}
 
 	public async void PlayerWin()
 	{
+		Game.General.AdController.LoadInterstitialAd();
 		Game.General.IsPaused = true;
 		Game.General.Counters.UpdateScale();
 		if (Game.Audio.Controller.soundEnabled)
@@ -141,6 +147,7 @@ public class Manager : MonoBehaviour
 		Game.Canvas.Controller.DisableFixedUI();
 		Game.Canvas.Controller.EnableWinUI();
 		Game.Canvas.Controller.SafeCursorVisibleShow(true);
+		Game.General.AdController.ShowAd();
 	}
 
 	public void StopGame(bool paused)

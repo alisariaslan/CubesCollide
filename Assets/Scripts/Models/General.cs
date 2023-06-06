@@ -19,6 +19,7 @@ namespace Assets.Scripts.Models
 		public GameObject OtoButton { get; set; }
 		public GameObject PauseButton { get; set; }
 		public LevelController LevelController { get; set; }
+		public AdController AdController { get; set; }
 		public string FoodTag { get; private set; } = "Food";
 		public string BotTag { get; private set; } = "Bot";
 		public string WallTag { get; private set; } = "Wall";

@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: "SARS Yaz\u0131l\u0131m"
+  companyName: ASProject
   productName: CubesCollide
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -137,7 +137,7 @@ PlayerSettings:
   vulkanEnableLateAcquireNextImage: 0
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
-  bundleVersion: 3
+  bundleVersion: 1
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -159,7 +159,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.sarsyazilim.cubescollide
-    Standalone: com.DefaultCompany.CubesCollide
+    Standalone: com.asproject.CubesCollide
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -260,8 +260,8 @@ PlayerSettings:
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/Ali/OneDrive/Documents/Keystores/Playstore/sarsyazilim.keystore
-  AndroidKeyaliasName: key0
+  AndroidKeystoreName: '{inproject}: Keystore/Android/release.keystore'
+  AndroidKeyaliasName: alisariaslan
   AndroidEnableArmv9SecurityFeatures: 0
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
@@ -856,7 +856,7 @@ PlayerSettings:
   ps4IncludedModules: []
   ps4attribVROutputEnabled: 0
   monoEnv: 
-  splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid: ff47bc2061253574aaddc0c888bcbace, type: 3}
+  splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid: 8e1767e5d92a6ef4789b2f466859324f, type: 3}
   splashScreenBackgroundSourcePortrait: {fileID: 0}
   blurSplashScreenBackground: 0
   spritePackerPolicy: 

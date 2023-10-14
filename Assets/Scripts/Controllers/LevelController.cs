@@ -8,141 +8,124 @@ using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour
 {
-	public GameObject levelGroup;
-	public TextAsset textAsset;
-	public GameModes gameModes;
+    public GameObject levelGroup;
+    public TextAsset textAsset;
+    public GameModes gameModes;
 
-	private async void Start()
-	{
-		await Task.Delay(100);
-		Manager.Game.General.LevelController = this;
-	}
-	public void ResetLevels()
-	{
-		cheatLevelCounter = 1;
-		DeSerializeXML();
-		bool first = true;
-		foreach (var item in gameModes.BETHEBIGGEST.Levels.LevelList)
-		{
-			var index = Convert.ToInt32(item.LevelNo) - 1;
-			if (index == levelGroup.transform.childCount)
-				break;
-			levelGroup.transform.GetChild(index).GetComponentInChildren<Text>().text = "Level " + item.LevelNo;
-			if (first)
-			{
-				item.IsLocked = "false";
-				first = false;
-			}
-			else
-				item.IsLocked = "true";
-		}
-		levelGroup.transform.GetChild(0).GetComponentInChildren<Text>().text = "Level 1 X";
-		Manager.Game.General.SelectedGameLevel = (1);
-		SerializeXML();
-		UpdateLevelsUI();
-	}
+    private async void Start()
+    {
+        await Task.Delay(100);
+        Manager.Game.General.LevelController = this;
+    }
 
-	public void UpdateLevelsUI()
-	{
-		DeSerializeXML();
-		int latestIndex = 0;
-		int latestLevelNo = 0;
-		var c = levelGroup.transform.childCount;
-		foreach (var item in gameModes.BETHEBIGGEST.Levels.LevelList)
-		{
-			int levelNo = Convert.ToInt32(item.LevelNo);
-			int index = levelNo - 1;
-			if (index == c)
-				break;
-			if (!Convert.ToBoolean(item.IsLocked))
-			{
-				latestIndex = index;
-				latestLevelNo = levelNo;
-			}
-			levelGroup.transform.GetChild(index).GetComponent<Button>().interactable = !Convert.ToBoolean(item.IsLocked);
-			levelGroup.transform.GetChild(index).GetComponentInChildren<Text>().text = "Level " + item.LevelNo;
-		}
-		levelGroup.transform.GetChild(latestIndex).GetComponentInChildren<Text>().text = "Level " + latestLevelNo + " X";
-		Manager.Game.General.SelectedGameLevel = latestLevelNo;
+    public void ResetLevels()
+    {
+        DeSerializeXML();
+        bool first = true;
+        int index = 0;
+        foreach (var item in gameModes.BETHEBIGGEST.Levels.LevelList)
+        {
+            if (first)
+            {
+                item.IsUnlocked = true;
+                item.IsSaved = true;
+                first = false;
+            }
+            else
+            {
+                item.IsUnlocked = false;
+                item.IsSaved = false;
+            }
+            index++;
+        }
+        Manager.Game.General.SelectedLevelIndex = 0;
+        SerializeXML();
+        Manager.Game.Canvas.Controller.UpdateLevelsUI();
+    }
 
-		SerializeXML();
-	}
 
-	private void Update()
-	{
-		if(Manager.Game.General.IsPaused)
-		{
-			if (Input.GetKeyDown(KeyCode.F12))
-				Manager.Game.General.LevelController.UnlockNextLevel(true);
-			if (Input.GetKeyDown(KeyCode.F11))
-				Manager.Game.General.LevelController.ResetLevels();
-		}
-	}
+    private void Update()
+    {
+        if (Manager.Game.General.IsPaused)
+        {
+            if (Input.GetKeyDown(KeyCode.F12))
+                Manager.Game.General.LevelController.UnlockNextLevel(true);
+            if (Input.GetKeyDown(KeyCode.F11))
+                Manager.Game.General.LevelController.ResetLevels();
+        }
+    }
 
-	int cheatLevelCounter = 1;
-	public void UnlockNextLevel(bool isCheat)
-	{
-		DeSerializeXML();
-		int levelNow = 1;
-		if (isCheat)
-		{
-			levelNow = cheatLevelCounter;
-			cheatLevelCounter++;
-		}
-		else
-			levelNow = Manager.Game.General.SelectedGameLevel;
-		var index = levelNow - 1;
-		var nextIndex = index + 1;
-		if (nextIndex > gameModes.BETHEBIGGEST.Levels.LevelList.Count - 1)
-			return;
-		gameModes.BETHEBIGGEST.Levels.LevelList[nextIndex].IsLocked = "false";
-		Debug.Log("Next Level Unlocked");
-		SerializeXML();
-		UpdateLevelsUI();
-	}
+    public void UnlockNextLevel(bool isCheat)
+    {
+        DeSerializeXML();
+        if (Manager.Game.General.SelectedLevelIndex + 1 == gameModes.BETHEBIGGEST.Levels.LevelList.Count)
+            return;
+        foreach (var item in gameModes.BETHEBIGGEST.Levels.LevelList)
+            item.IsSaved = false;
+        Manager.Game.General.SelectedLevelIndex++;
+        gameModes.BETHEBIGGEST.Levels.LevelList[Manager.Game.General.SelectedLevelIndex].IsUnlocked = true;
+        gameModes.BETHEBIGGEST.Levels.LevelList[Manager.Game.General.SelectedLevelIndex].IsSaved = true;
+        Debug.Log("Next Level Unlocked");
+        SerializeXML();
+        Manager.Game.Canvas.Controller.UpdateLevelsUI();
+    }
 
-	public int GetLatestUnlockedLevel(GameMode gameMode)
-	{
-		int index = 0;
-		if (gameMode == GameMode.BETHEBIGGEST)
-		{
-			DeSerializeXML(); string levelStr = "1";
-			foreach (var item in gameModes.BETHEBIGGEST.Levels.LevelList)
-			{
-				if (index == levelGroup.transform.childCount)
-					break;
+    public int GetLatestUnlockedLevel(GameMode gameMode)
+    {
+        int index = 0;
+        if (gameMode == GameMode.BETHEBIGGEST)
+        {
+            DeSerializeXML();
+            foreach (var item in gameModes.BETHEBIGGEST.Levels.LevelList)
+            {
+                if (index == levelGroup.transform.childCount)
+                    break;
+                if (item.IsUnlocked is false)
+                    return index + 1;
+                index++;
+            }
+        }
+        return 1;
+    }
 
-				if (!Convert.ToBoolean(item.IsLocked))
-					levelStr = item.LevelNo;
+    public int GetSavedLevelIndex(GameMode gameMode)
+    {
+        int index = 0;
+        if (gameMode == GameMode.BETHEBIGGEST)
+        {
+            foreach (var item in gameModes.BETHEBIGGEST.Levels.LevelList)
+            {
+                if (index == levelGroup.transform.childCount)
+                    break;
+                if (item.IsSaved)
+                    return index;
+                index++;
+            }
+        }
+        return 1;
+    }
 
-				index++;
-			}
-			return Convert.ToInt32(levelStr);
+    public void SerializeXML()
+    {
+        var path = Path.Combine(Application.persistentDataPath, "Levels.xml");
+        XmlSerializer s = new XmlSerializer(typeof(GameModes));
+        TextWriter w = new StreamWriter(path);
+        s.Serialize(w, gameModes);
+        w.Close();
+    }
 
-		}
-		return 1;
-	}
-
-	private void SerializeXML()
-	{
-		var path = Path.Combine(Application.persistentDataPath, "Levels.xml");
-		XmlSerializer s = new XmlSerializer(typeof(GameModes));
-		TextWriter w = new StreamWriter(path);
-		s.Serialize(w, gameModes);
-		w.Close();
-	}
-	private void DeSerializeXML()
-	{
-		var path = Path.Combine(Application.persistentDataPath, "Levels.xml");
-		if (!File.Exists(path) || Debug.isDebugBuild)
-		{
-			File.Create(path).Dispose();
-			File.WriteAllText(path, textAsset.text);
-		}
-		XmlSerializer s = new XmlSerializer(typeof(GameModes));
-		gameModes = new GameModes();
-		TextReader r = new StreamReader(path);
-		gameModes = (GameModes)s.Deserialize(r);
-		r.Close();
-	}
+    public void DeSerializeXML()
+    {
+        var path = Path.Combine(Application.persistentDataPath, "Levels.xml");
+        if (!File.Exists(path))
+        {
+            File.Create(path).Dispose();
+            File.WriteAllText(path, textAsset.text);
+        }
+        XmlSerializer s = new XmlSerializer(typeof(GameModes));
+        gameModes = new GameModes();
+        TextReader r = new StreamReader(path);
+        gameModes = (GameModes)s.Deserialize(r);
+        r.Close();
+    }
 }

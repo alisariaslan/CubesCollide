@@ -5,8 +5,8 @@ namespace Assets.Scripts.Models
     public class General
 	{
 		public GameMode SelectedGameMode { get; set; }
-		public int SelectedGameLevel { get; set; }
-		private float PlayerScore_ { get; set; } = 0;
+		public int SelectedLevelIndex { get; set; }
+        private float PlayerScore_ { get; set; } = 0;
 		public float PlayerScore { get { return PlayerScore_; } set { PlayerScore_ = value; } }
 		public float DefaultPayerSpeed { get; set; } = 3;
 		public float DefaultBotSpeed { get; set; } = 1;
@@ -17,7 +17,6 @@ namespace Assets.Scripts.Models
 		public GameObject OtoButton { get; set; }
 		public GameObject PauseButton { get; set; }
 		public LevelController LevelController { get; set; }
-		public AdController AdController { get; set; }
 		public string FoodTag { get; private set; } = "Food";
 		public string BotTag { get; private set; } = "Bot";
 		public string WallTag { get; private set; } = "Wall";

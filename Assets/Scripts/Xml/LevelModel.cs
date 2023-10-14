@@ -6,11 +6,13 @@ namespace Assets.Scripts.Xml
 	[XmlRoot(ElementName = "Level")]
 	public class Level
 	{
-		[XmlElement(ElementName = "levelNo")]
-		public string LevelNo { get; set; }
-		[XmlElement(ElementName = "isLocked")]
-		public string IsLocked { get; set; }
-	}
+		[XmlElement(ElementName = "levelName")]
+		public string LevelName { get; set; }
+		[XmlElement(ElementName = "isUnlocked")]
+		public bool IsUnlocked { get; set; }
+        [XmlElement(ElementName = "saved")]
+        public bool IsSaved { get; set; }
+    }
 
 	[XmlRoot(ElementName = "Levels")]
 	public class Levels

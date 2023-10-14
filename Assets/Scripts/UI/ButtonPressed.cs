@@ -129,7 +129,7 @@ public class ButtonPressed : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
 	public void TogglePause()
 	{
-		FindFirstObjectByType<Manager>().Pause();
+		FindFirstObjectByType<Manager>().LevelPause();
 	}
 
 

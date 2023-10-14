@@ -1,3 +1,4 @@
+using Assets.Scripts.Xml;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,7 +27,7 @@ public class CanvasController : MonoBehaviour
         else
             pcControllers.SetActive(true);
         Manager.Game.General.SelectedGameMode = (GameMode.BETHEBIGGEST);
-        Manager.Game.General.SelectedGameLevel = (1);
+        Manager.Game.General.SelectedLevelIndex = (1);
     }
 
     public void GameModeSelected(Text text)
@@ -48,16 +49,40 @@ public class CanvasController : MonoBehaviour
         }
     }
 
-    public void GameLevelSelected(int level)
+    public void UpdateLevelsUI()
     {
-        var subObjects = levelGroup.GetComponentsInChildren<Text>();
-        var index = level - 1;
-        for (int i = 0; i < subObjects.Length; i++)
+        Manager.Game.General.LevelController.DeSerializeXML();
+        int index = 0;
+        foreach (var item in Manager.Game.General.LevelController.gameModes.BETHEBIGGEST.Levels.LevelList)
         {
-            subObjects[i].text = "Level " + (i+1);
+            levelGroup.transform.GetChild(index).GetComponent<Button>().interactable = item.IsUnlocked;
+            levelGroup.transform.GetChild(index).GetComponentInChildren<Text>().text = "Level: " + item.LevelName;
+            if (item.IsSaved)
+                levelGroup.transform.GetChild(index).GetComponentInChildren<Text>().text = "Level: " + (index + 1) + " <<";
+            index++;
         }
-        Manager.Game.General.SelectedGameLevel = (level);
-        subObjects[index].text = "Level " + level + " X";
+        Manager.Game.General.LevelController.SerializeXML();
+    }
+
+    public void GameLevelSelected(GameMode mode, string levelName)
+    {
+        Manager.Game.General.LevelController.DeSerializeXML();
+        if (mode == GameMode.BETHEBIGGEST)
+        {
+            Manager.Game.General.LevelController.gameModes.BETHEBIGGEST.Levels.LevelList.ForEach(item => item.IsSaved = false);
+            int index = 0;
+            foreach (var item in Manager.Game.General.LevelController.gameModes.BETHEBIGGEST.Levels.LevelList)
+            {
+                if (item.LevelName.Equals(levelName))
+                {
+                    Manager.Game.General.LevelController.gameModes.BETHEBIGGEST.Levels.LevelList[index].IsSaved = true;
+                    Manager.Game.General.SelectedLevelIndex = index;
+                }
+                index++;
+            }
+        }
+        Manager.Game.General.LevelController.SerializeXML();
+        UpdateLevelsUI();
     }
 
     public void EnableExtendedUI()
@@ -111,35 +136,25 @@ public class CanvasController : MonoBehaviour
     {
         Animator.Play("TryUp", 3);
     }
-    public void EnableWinUI()
+    public void EnableFinishedUI()
     {
-        Animator.Play("WinEnter", 7);
-        if (Manager.Game.General.SelectedGameMode == GameMode.BETHEBIGGEST)
+        if (Manager.Game.General.SelectedLevelIndex + 1 == Manager.Game.General.LevelController.gameModes.BETHEBIGGEST.Levels.LevelList.Count)
         {
-            if (Manager.Game.General.SelectedGameLevel == Manager.Game.General.LevelController.gameModes.BETHEBIGGEST.Levels.LevelList.Count)
-            {
-                SwitchGameModeFinal();
-            }
-            else
-            {
-                SwitchGameModeNext();
-            }
+            Animator.Play("WinEnter", 7);
+
+        }
+        else
+        {
+            Animator.Play("ContinueEnter", 8);
         }
     }
-
-    public void SwitchGameModeFinal()
-    {
-        Debug.Log("selected: "+Manager.Game.General.SelectedGameLevel+  ", final: "+ Manager.Game.General.LevelController.gameModes.BETHEBIGGEST.Levels.LevelList.Count);
-    }
-
-    public void SwitchGameModeNext()
-    {
-        Debug.Log("selected: " + Manager.Game.General.SelectedGameLevel + ", next: " + Manager.Game.General.LevelController.gameModes.BETHEBIGGEST.Levels.LevelList.Count);
-    }
-
     public void DisableWinUI()
     {
         Animator.Play("WinExit", 7);
+    }
+    public void DisableContinueUI()
+    {
+        Animator.Play("ContinueExit", 8);
     }
 
     public void EnterModesMenu()

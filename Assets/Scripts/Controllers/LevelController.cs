@@ -1,10 +1,8 @@
-using Assets.Scripts.Xml;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Assets.Scripts.Xml;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour
 {
@@ -107,25 +105,27 @@ public class LevelController : MonoBehaviour
 
     public void SerializeXML()
     {
-        var path = Path.Combine(Application.persistentDataPath, "Levels.xml");
-        XmlSerializer s = new XmlSerializer(typeof(GameModes));
-        TextWriter w = new StreamWriter(path);
-        s.Serialize(w, gameModes);
-        w.Close();
+        XmlSerializer serializer = new XmlSerializer(typeof(GameModes));
+        using (StringWriter writer = new StringWriter())
+        {
+            serializer.Serialize(writer, gameModes);
+            string xmlString = writer.ToString();
+            PlayerPrefs.SetString("save", xmlString);
+        }
     }
 
     public void DeSerializeXML()
     {
-        var path = Path.Combine(Application.persistentDataPath, "Levels.xml");
-        if (!File.Exists(path))
+        string save = PlayerPrefs.GetString("save", null);
+        if(string.IsNullOrEmpty(save))
         {
-            File.Create(path).Dispose();
-            File.WriteAllText(path, textAsset.text);
+            PlayerPrefs.SetString("save", textAsset.text);
+            save = textAsset.text;
         }
-        XmlSerializer s = new XmlSerializer(typeof(GameModes));
-        gameModes = new GameModes();
-        TextReader r = new StreamReader(path);
-        gameModes = (GameModes)s.Deserialize(r);
-        r.Close();
+        using (TextReader reader = new StringReader(save)) // Use StringReader to read from a string
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(GameModes));
+            gameModes = (GameModes)serializer.Deserialize(reader);
+        }
     }
 }

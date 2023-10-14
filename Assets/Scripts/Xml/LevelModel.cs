@@ -16,7 +16,7 @@ namespace Assets.Scripts.Xml
 	public class Levels
 	{
 		[XmlElement(ElementName = "Level")]
-		public List<Level> Level { get; set; }
+		public List<Level> LevelList { get; set; }
 	}
 
 	[XmlRoot(ElementName = "BETHEBIGGEST")]

@@ -36,10 +36,10 @@ public class ChatController : MonoBehaviour
 	public async Task Text_Line(string str)
 	{
 		text.text = (str);
-		Manager.Game.Canvas.Controller.ChatToggle();
+		Manager.Game?.Canvas?.Controller?.ChatToggle();
 		await Task.Delay(500); //Enter
 		await Task.Delay(3000); //Stay
-		Manager.Game.Canvas.Controller.ChatExit();
+		Manager.Game?.Canvas?.Controller?.ChatExit();
 		await Task.Delay(500); //Exit
 	}
 

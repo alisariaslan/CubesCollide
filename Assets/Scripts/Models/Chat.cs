@@ -6,7 +6,7 @@ namespace Assets.Scripts.Models
 	{
 		public GameObject Object { get; set; }
 		public float ClearInterval { get; set; }
-		public ChatController Controller { get { return Object.GetComponent<ChatController>(); } }
+		public ChatController Controller { get { return Object?.GetComponent<ChatController>(); } }
 
 	}
 }

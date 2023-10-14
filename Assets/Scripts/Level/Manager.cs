@@ -51,15 +51,14 @@ public class Manager : MonoBehaviour
 	{
 		Debug.Log(Game.General.SelectedGameMode);
 		int latestLevel = Manager.Game.General.LevelController.GetLatestUnlockedLevel(Game.General.SelectedGameMode);
-		Game.General.SelectedGameLevels.Clear();
-		Game.General.SelectedGameLevels.Add(latestLevel);
+		Game.General.SelectedGameLevel = (latestLevel);
 		StartGame(false);
 	}
 	public async void StartGame(bool isTryAgain)
 	{
 		Game.General.IsPaused = true;
-		if (!isTryAgain)
-			Game.General.SelectedGameLevel = Game.General.SelectedGameLevels[new System.Random().Next(0, Game.General.SelectedGameLevels.Count)];
+		//if (!isTryAgain)
+		//	Game.General.SelectedGameLevel = Game.General.SelectedGameLevels[new System.Random().Next(0, Game.General.SelectedGameLevels.Count)];
 		Game.General.PlayerScore = 0;
 		Game.Canvas.Controller.DisableMenuUI();
 		Game.Canvas.Controller.DisableExtendedUI();
@@ -87,11 +86,11 @@ public class Manager : MonoBehaviour
 		Game.General.OtoButton.GetComponent<ButtonPressed>().CheckOto();
 		var text = ("Game mode: " + Game.General.SelectedGameMode);
 		text += ("\nGame level: " + Game.General.SelectedGameLevel);
-		await Game.Chat.Controller.Text_Line(text);
+		await Game.Chat?.Controller?.Text_Line(text);
 		if (Game.General.SelectedGameMode == GameMode.BETHEBIGGEST)
 		{
 			text = ("Eat in order, Be the Biggest!");
-			_= Game.Chat.Controller.Text_Line(text);
+			_= Game.Chat?.Controller?.Text_Line(text);
 		}
 		Game.General.IsPaused = false;
 	}

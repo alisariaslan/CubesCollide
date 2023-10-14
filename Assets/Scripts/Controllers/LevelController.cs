@@ -22,7 +22,7 @@ public class LevelController : MonoBehaviour
 		cheatLevelCounter = 1;
 		DeSerializeXML();
 		bool first = true;
-		foreach (var item in gameModes.BETHEBIGGEST.Levels.Level)
+		foreach (var item in gameModes.BETHEBIGGEST.Levels.LevelList)
 		{
 			var index = Convert.ToInt32(item.LevelNo) - 1;
 			if (index == levelGroup.transform.childCount)
@@ -37,8 +37,7 @@ public class LevelController : MonoBehaviour
 				item.IsLocked = "true";
 		}
 		levelGroup.transform.GetChild(0).GetComponentInChildren<Text>().text = "Level 1 X";
-		Manager.Game.General.SelectedGameLevels.Clear();
-		Manager.Game.General.SelectedGameLevels.Add(1);
+		Manager.Game.General.SelectedGameLevel = (1);
 		SerializeXML();
 		UpdateLevelsUI();
 	}
@@ -49,7 +48,7 @@ public class LevelController : MonoBehaviour
 		int latestIndex = 0;
 		int latestLevelNo = 0;
 		var c = levelGroup.transform.childCount;
-		foreach (var item in gameModes.BETHEBIGGEST.Levels.Level)
+		foreach (var item in gameModes.BETHEBIGGEST.Levels.LevelList)
 		{
 			int levelNo = Convert.ToInt32(item.LevelNo);
 			int index = levelNo - 1;
@@ -64,8 +63,6 @@ public class LevelController : MonoBehaviour
 			levelGroup.transform.GetChild(index).GetComponentInChildren<Text>().text = "Level " + item.LevelNo;
 		}
 		levelGroup.transform.GetChild(latestIndex).GetComponentInChildren<Text>().text = "Level " + latestLevelNo + " X";
-		Manager.Game.General.SelectedGameLevels.Clear();
-		Manager.Game.General.SelectedGameLevels.Add(latestLevelNo);
 		Manager.Game.General.SelectedGameLevel = latestLevelNo;
 
 		SerializeXML();
@@ -96,9 +93,9 @@ public class LevelController : MonoBehaviour
 			levelNow = Manager.Game.General.SelectedGameLevel;
 		var index = levelNow - 1;
 		var nextIndex = index + 1;
-		if (nextIndex > gameModes.BETHEBIGGEST.Levels.Level.Count - 1)
+		if (nextIndex > gameModes.BETHEBIGGEST.Levels.LevelList.Count - 1)
 			return;
-		gameModes.BETHEBIGGEST.Levels.Level[nextIndex].IsLocked = "false";
+		gameModes.BETHEBIGGEST.Levels.LevelList[nextIndex].IsLocked = "false";
 		Debug.Log("Next Level Unlocked");
 		SerializeXML();
 		UpdateLevelsUI();
@@ -110,7 +107,7 @@ public class LevelController : MonoBehaviour
 		if (gameMode == GameMode.BETHEBIGGEST)
 		{
 			DeSerializeXML(); string levelStr = "1";
-			foreach (var item in gameModes.BETHEBIGGEST.Levels.Level)
+			foreach (var item in gameModes.BETHEBIGGEST.Levels.LevelList)
 			{
 				if (index == levelGroup.transform.childCount)
 					break;
@@ -133,13 +130,11 @@ public class LevelController : MonoBehaviour
 		TextWriter w = new StreamWriter(path);
 		s.Serialize(w, gameModes);
 		w.Close();
-		Debug.Log("Serialization complete");
 	}
 	private void DeSerializeXML()
 	{
 		var path = Path.Combine(Application.persistentDataPath, "Levels.xml");
-		Debug.Log(path);
-		if (!File.Exists(path))
+		if (!File.Exists(path) || Debug.isDebugBuild)
 		{
 			File.Create(path).Dispose();
 			File.WriteAllText(path, textAsset.text);
@@ -149,6 +144,5 @@ public class LevelController : MonoBehaviour
 		TextReader r = new StreamReader(path);
 		gameModes = (GameModes)s.Deserialize(r);
 		r.Close();
-		Debug.Log("Deserialization complete");
 	}
 }

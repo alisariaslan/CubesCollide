@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
-	public class General
+    public class General
 	{
 		public GameMode SelectedGameMode { get; set; }
-		public List<int> SelectedGameLevels{ get; set; } = new List<int>();
 		public int SelectedGameLevel { get; set; }
 		private float PlayerScore_ { get; set; } = 0;
 		public float PlayerScore { get { return PlayerScore_; } set { PlayerScore_ = value; } }

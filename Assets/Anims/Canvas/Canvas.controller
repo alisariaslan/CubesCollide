@@ -163,7 +163,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Layer 3
+  m_Name: New Layer 5
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 5305965129067057535}
@@ -180,6 +180,12 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -3187802703972042307}
     m_Position: {x: 330, y: 310, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 1176635702523488432}
+    m_Position: {x: 600, y: -60, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 4480062654340318066}
+    m_Position: {x: 620, y: 20, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -353,7 +359,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Layer 2
+  m_Name: New Layer 4
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -6573955741339763962}
@@ -384,7 +390,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Layer 5
+  m_Name: New Layer 7
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -5748965515398249952}
@@ -412,7 +418,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Layer
+  m_Name: New Layer 1
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 7001737253123540886}
@@ -466,7 +472,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Layer 1
+  m_Name: New Layer 3
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -6479283141843866117}
@@ -654,7 +660,7 @@ AnimatorController:
   m_AnimatorParameters: []
   m_AnimatorLayers:
   - serializedVersion: 5
-    m_Name: Base Layer
+    m_Name: New Layer 0
     m_StateMachine: {fileID: 9043939073355740213}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -666,7 +672,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: New Layer
+    m_Name: New Layer 1
     m_StateMachine: {fileID: -3864962490814285086}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -678,7 +684,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: New Layer 0
+    m_Name: New Layer 2
     m_StateMachine: {fileID: 988037503219698513}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -690,7 +696,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: New Layer 1
+    m_Name: New Layer 3
     m_StateMachine: {fileID: -3375341678018682112}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -702,7 +708,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: New Layer 2
+    m_Name: New Layer 4
     m_StateMachine: {fileID: -4257786287034944233}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -714,7 +720,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: New Layer 3
+    m_Name: New Layer 5
     m_StateMachine: {fileID: -6683256317645769916}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -726,7 +732,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: New Layer 4
+    m_Name: New Layer 6
     m_StateMachine: {fileID: 1358097887811159128}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -738,7 +744,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: New Layer 5
+    m_Name: New Layer 7
     m_StateMachine: {fileID: -4112717263281021854}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -750,7 +756,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: New Layer 6
+    m_Name: New Layer 8
     m_StateMachine: {fileID: 8011277825759416581}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -768,7 +774,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Layer 0
+  m_Name: New Layer 2
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -1073072619804196230}
@@ -789,6 +795,32 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 5720283495483241925}
+--- !u!1102 &1176635702523488432
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ScoreboardEnter
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 05f193e559f8ae04c9625c89d3c9964f, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1107 &1358097887811159128
 AnimatorStateMachine:
   serializedVersion: 6
@@ -796,7 +828,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Layer 4
+  m_Name: New Layer 6
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -8251924065736487437}
@@ -864,6 +896,32 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 0}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &4480062654340318066
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ScoreboardExit
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 7233d50c5b9d27749bc7802466654086, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1058,7 +1116,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Layer 6
+  m_Name: New Layer 8
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 5503961545551874201}
@@ -1112,7 +1170,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Base Layer
+  m_Name: New Layer 0
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 7701663356960931750}

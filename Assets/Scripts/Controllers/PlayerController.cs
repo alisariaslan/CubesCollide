@@ -255,49 +255,49 @@ public class PlayerController : MonoBehaviour
 
 	public void DirectionUp()
 	{
-		if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.up)
+		if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.up)
 			direction = Vector2.up;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.right)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.right)
 			direction = Vector2.right;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.down)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.down)
 			direction = Vector2.down;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.left)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.left)
 			direction = Vector2.left;
 	}
 
 	public void DirectionDown()
 	{
-		if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.up)
+		if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.up)
 			direction = Vector2.down;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.right)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.right)
 			direction = Vector2.left;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.down)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.down)
 			direction = Vector2.up;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.left)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.left)
 			direction = Vector2.right;
 	}
 
 	public void DirectionRight()
 	{
-		if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.up)
+		if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.up)
 			direction = Vector2.right;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.right)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.right)
 			direction = Vector2.down;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.down)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.down)
 			direction = Vector2.left;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.left)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.left)
 			direction = Vector2.up;
 	}
 
 	public void DirectionLeft()
 	{
-		if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.up)
+		if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.up)
 			direction = Vector2.left;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.left)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.left)
 			direction = Vector2.down;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.down)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.down)
 			direction = Vector2.right;
-		else if (Helper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.right)
+		else if (MathHelper.AsXZRawReversed(Manager.Game.Camera.Controller.offSet) == Vector2.right)
 			direction = Vector2.up;
 	}
 

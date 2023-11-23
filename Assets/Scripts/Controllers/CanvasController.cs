@@ -181,6 +181,14 @@ public class CanvasController : MonoBehaviour
     {
         Animator.Play("ChatExit", 6);
     }
+    public void EnterScoreboard()
+    {
+        Animator.Play("ScoreboardEnter", 5);
+    }
+    public void ExitScoreboard()
+    {
+        Animator.Play("ScoreboardExit", 5);
+    }
 
     public void SafeCursorVisibleShow(bool state)
     {

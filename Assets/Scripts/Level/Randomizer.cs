@@ -62,8 +62,8 @@ public class Randomizer : MonoBehaviour
         Manager.Game.Random.Object = this.gameObject;
         if (randomSkyColor)
         {
-            RenderSettings.skybox.SetColor("_Top", Helper.RandomColor());
-            RenderSettings.skybox.SetColor("_Bottom", Helper.RandomColor());
+            RenderSettings.skybox.SetColor("_Top", MathHelper.RandomColor());
+            RenderSettings.skybox.SetColor("_Bottom", MathHelper.RandomColor());
         }
         else
         {
@@ -73,8 +73,8 @@ public class Randomizer : MonoBehaviour
 
         if (randomDancerColor)
         {
-            GameObject.Find("DancerCubeLeft").GetComponent<Renderer>().material.color = Helper.RandomColor();
-            GameObject.Find("DancerCubeRight").GetComponent<Renderer>().material.color = Helper.RandomColor();
+            GameObject.Find("DancerCubeLeft").GetComponent<Renderer>().material.color = MathHelper.RandomColor();
+            GameObject.Find("DancerCubeRight").GetComponent<Renderer>().material.color = MathHelper.RandomColor();
         }
     }
 
@@ -141,7 +141,7 @@ public class Randomizer : MonoBehaviour
         var my_ground = Instantiate(arena, new Vector3(0, 0, 0), Quaternion.identity, GameObject.Find("InGameObjects").transform);
         if (randomGroundColor)
         {
-            Color rndColor = Helper.RandomColor();
+            Color rndColor = MathHelper.RandomColor();
             my_ground.GetComponent<Renderer>().material.color = rndColor;
             foreach (var item in my_ground.GetComponentsInChildren<Renderer>())
             {
@@ -255,7 +255,7 @@ public class Randomizer : MonoBehaviour
             SpawnedFood.GetComponent<FoodController>().Index = counter;
             Foods.Add(MapFood);
             if (randomFoodColor)
-                SpawnedFood.GetComponent<Renderer>().material.color = Helper.RandomColor();
+                SpawnedFood.GetComponent<Renderer>().material.color = MathHelper.RandomColor();
             SpawnedFood.transform.localScale = new Vector3(scale, scale, scale);
             resetCounter++;
             passed++;
@@ -327,7 +327,7 @@ public class Randomizer : MonoBehaviour
                 if (counter == 0 && Manager.Game.General.SelectedGameMode == GameMode.BETHEBIGGEST)
                     SpawnedBot.transform.GetChild(0).gameObject.SetActive(true);
                 if (randomBotColor)
-                    SpawnedBot.GetComponent<Renderer>().material.color = Helper.RandomColor();
+                    SpawnedBot.GetComponent<Renderer>().material.color = MathHelper.RandomColor();
                 SpawnedBot.transform.localScale = new Vector3(random_size, random_size, random_size);
                 Bot botModel = new Bot()
                 {
@@ -450,7 +450,7 @@ public class Randomizer : MonoBehaviour
         }
         var my_player = Instantiate(player, spawn_pos, Quaternion.identity, GameObject.Find("InGameObjects").transform);
         if (randomPlayerColor)
-            my_player.GetComponent<Renderer>().material.color = Helper.RandomColor();
+            my_player.GetComponent<Renderer>().material.color = MathHelper.RandomColor();
         my_player.transform.localScale = new Vector3(random_size, random_size, random_size);
     }
 

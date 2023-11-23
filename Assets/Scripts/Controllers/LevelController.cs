@@ -50,6 +50,10 @@ public class LevelController : MonoBehaviour
                 Manager.Game.General.LevelController.UnlockNextLevel(true);
             if (Input.GetKeyDown(KeyCode.F11))
                 Manager.Game.General.LevelController.ResetLevels();
+#if DEBUG
+            if (Input.GetKeyDown(KeyCode.F10))
+                FindFirstObjectByType<AdHelper>().LoadInterstitialAd();
+#endif
         }
     }
 

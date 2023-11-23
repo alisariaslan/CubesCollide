@@ -160,6 +160,7 @@ public class Manager : MonoBehaviour
         Game.Canvas.Controller.DisableFixedUI();
         Game.Canvas.Controller.EnableTryAgainUI();
         Game.Canvas.Controller.SafeCursorVisibleShow(true);
+        FindFirstObjectByType<AdHelper>().LoadInterstitialAd();
         //Game.General.AdController.ShowAd();
     }
 
